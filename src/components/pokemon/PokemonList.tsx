@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useQuery } from "@apollo/client/react";
 
 import { GET_POKEMONS } from "@/graphql/queries/pokemonQueries";
@@ -12,11 +11,11 @@ import PokemonPagination from "./PaginationPokemonList";
 
 import { PAGE_SIZE } from "@/lib/pagination";
 
-export default function PokemonList() {
-  const searchParams = useSearchParams();
+type Props = {
+  currentPage: number;
+};
 
-  const currentPage = Math.max(1, Number(searchParams.get("page")) || 1);
-
+export default function PokemonList({ currentPage }: Readonly<Props>) {
   const { data, loading, error } = useQuery<GetPokemonsData, GetPokemonsVars>(
     GET_POKEMONS,
     {

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -16,6 +15,8 @@ import { useSearchBar } from "@/hooks/useSearchBar";
 import { X } from "lucide-react";
 
 export function SearchBar() {
+  const router = useRouter();
+
   const {
     inputValue,
     setInputValue,
@@ -27,17 +28,18 @@ export function SearchBar() {
 
   const suggestions = usePokemonSuggestions(inputValue);
 
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const currentSearch = searchParams.get("search") ?? "";
+  const navigateToPokemon = (name: string) => {
+    router.push(`/pokemon/${encodeURIComponent(name.trim())}`);
 
-  useEffect(() => {
-    setInputValue(currentSearch);
-  }, [currentSearch, setInputValue]);
+    setShowSuggestions(false);
+  };
 
   const handleSearch = () => {
-    if (!inputValue.trim()) return;
-    router.push(`/pokemon/${encodeURIComponent(inputValue.trim())}`);
+    if (!inputValue.trim()) {
+      return;
+    }
+
+    navigateToPokemon(inputValue);
   };
 
   return (
@@ -51,7 +53,7 @@ export function SearchBar() {
               id="pokemon-search"
               value={inputValue}
               placeholder="Pokemon name..."
-              className="pr-8 rounded-r-none"
+              className="rounded-r-none pr-8"
               onChange={(e) => {
                 setInputValue(e.target.value);
                 setShowSuggestions(true);
@@ -59,19 +61,23 @@ export function SearchBar() {
               onFocus={() => setShowSuggestions(true)}
               onBlur={hideSuggestions}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSearch();
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
               }}
             />
+
             {inputValue && (
               <button
                 type="button"
+                aria-label="Clear search"
+                className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 onMouseDown={(e) => {
                   e.preventDefault();
+
                   setInputValue("");
                   setShowSuggestions(false);
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                aria-label="Clear search"
               >
                 <X size={16} />
               </button>
@@ -86,7 +92,7 @@ export function SearchBar() {
             suggestions={suggestions}
             onSelect={(name) => {
               selectSuggestion(name);
-              router.push(`/pokemon/${encodeURIComponent(name)}`);
+              navigateToPokemon(name);
             }}
           />
         )}

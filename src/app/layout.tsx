@@ -5,6 +5,8 @@ import { Inter, Roboto } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search/SearchBar";
 import Navbar from "@/components/Navbar";
+import { Suspense } from "react";
+
 
 const robotoHeading = Roboto({
   subsets: ["latin"],

@@ -1,14 +1,13 @@
-import { Suspense } from "react";
-import PokemonList from "../components/pokemon/PokemonList";
+import PokemonList from "@/components/pokemon/PokemonList";
 
-export default function Home() {
-  return (
-    <div>
-      <main>
-        <Suspense fallback={<p>Loading...</p>}>
-          <PokemonList />
-        </Suspense>
-      </main>
-    </div>
-  );
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
+
+export default async function HomePage({ searchParams }: Props) {
+  const params = await searchParams;
+
+  return <PokemonList currentPage={Number(params.page) || 1} />;
 }
