@@ -13,6 +13,8 @@ import { SearchSuggestions } from "./SearchSuggestions";
 import { usePokemonSuggestions } from "@/hooks/usePokemonSuggestions";
 import { useSearchBar } from "@/hooks/useSearchBar";
 
+import { X } from "lucide-react";
+
 export function SearchBar() {
   const {
     inputValue,
@@ -31,12 +33,11 @@ export function SearchBar() {
 
   useEffect(() => {
     setInputValue(currentSearch);
-  }, [currentSearch, setInputValue]); // ✅ added setInputValue to deps
+  }, [currentSearch, setInputValue]);
 
-  // ✅ Uses inputValue from state; no argument needed
   const handleSearch = () => {
     if (!inputValue.trim()) return;
-    router.push(`/pokemon/${encodeURIComponent(inputValue.trim())}`); // ✅ single navigation
+    router.push(`/pokemon/${encodeURIComponent(inputValue.trim())}`);
   };
 
   return (
@@ -45,22 +46,37 @@ export function SearchBar() {
         <FieldLabel htmlFor="pokemon-search">Search Pokemon</FieldLabel>
 
         <ButtonGroup>
-          <Input
-            id="pokemon-search"
-            value={inputValue}
-            placeholder="Pokemon name..."
-            onChange={(e) => {
-              setInputValue(e.target.value);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={hideSuggestions}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-          />
+          <div className="relative flex-1">
+            <Input
+              id="pokemon-search"
+              value={inputValue}
+              placeholder="Pokemon name..."
+              className="pr-8 rounded-r-none"
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={hideSuggestions}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+            />
+            {inputValue && (
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setInputValue("");
+                  setShowSuggestions(false);
+                }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                aria-label="Clear search"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
 
           <Button onClick={handleSearch}>Search</Button>
         </ButtonGroup>

@@ -8,7 +8,11 @@ type Props = {
 };
 
 export default function PokemonAttackList({ title, attacks }: Readonly<Props>) {
-  if (!attacks.length) {
+  const validAttacks = attacks.filter(
+    (attack) => attack.name && attack.type && attack.damage !== null,
+  );
+
+  if (!validAttacks.length) {
     return null;
   }
 
@@ -18,14 +22,14 @@ export default function PokemonAttackList({ title, attacks }: Readonly<Props>) {
         <h2 className="text-2xl font-semibold">{title}</h2>
 
         <p className="text-sm text-muted-foreground">
-          {attacks.length} attacks
+          {validAttacks.length} attacks
         </p>
       </div>
 
       <div className="grid gap-3">
-        {attacks.map((attack) => (
+        {validAttacks.map((attack) => (
           <PokemonAttackCard
-            key={`${attack.name}-${attack.type}`}
+            key={`${attack.name}-${attack.type}-${attack.damage}`}
             attack={attack}
           />
         ))}
