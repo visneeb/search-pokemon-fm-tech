@@ -1,37 +1,6 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { registerApolloClient } from "@apollo/client-integration-nextjs";
 
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: "https://graphql-pokemon2.vercel.app/",
-  }),
+import { makeClient } from "./make-client";
 
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          pokemons: {
-            merge(_, incoming) {
-              return incoming;
-            },
-          },
-        },
-      },
-
-      Pokemon: {
-        fields: {
-          attacks: {
-            merge: false,
-          },
-
-          evolutions: {
-            merge: false,
-          },
-        },
-      },
-    },
-  }),
-});
-
-export function getClient() {
-  return client;
-}
+export const { getClient, query, PreloadQuery } =
+  registerApolloClient(makeClient);

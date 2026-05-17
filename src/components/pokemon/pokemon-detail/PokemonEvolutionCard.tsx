@@ -13,13 +13,14 @@ export default function EvolutionCard({ evolution }: Readonly<Props>) {
       href={`/pokemon/${evolution.name}`}
       className="rounded-lg border p-3 transition-shadow hover:shadow-md"
     >
-      <Image
-        src={evolution.image}
-        alt={evolution.name}
-        width={90}
-        height={90}
-      />
-
+      <div className="relative flex h-32 w-32 shrink-0 items-center justify-center">
+        <Image
+          src={evolution.image}
+          alt={evolution.name}
+          fill
+          className="object-contain"
+        />
+      </div>
       <p className="mt-2 text-center">{evolution.name}</p>
     </Link>
   );

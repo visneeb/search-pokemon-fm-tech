@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ApolloWrapper } from "./ApolloWrapper";
+import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import { Inter, Roboto } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search/SearchBar";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import { Suspense } from "react";
-
 
 const robotoHeading = Roboto({
   subsets: ["latin"],
@@ -17,7 +16,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Pokemon Search",
-  description: "Searching for pokemon infomation",
+  description: "Searching for pokemon information",
 };
 
 export default function RootLayout({
@@ -38,8 +37,10 @@ export default function RootLayout({
       <body className="flex flex-col justify-center ">
         <Navbar />
         <ApolloWrapper>
-          <header className="p-10">
-            <SearchBar />
+          <header className="p-10 ">
+            <Suspense>
+              <SearchBar />
+            </Suspense>
           </header>
           <main className="p-10">{children}</main>
         </ApolloWrapper>

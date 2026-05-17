@@ -1,6 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+
+import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -12,10 +15,9 @@ import { SearchSuggestions } from "./SearchSuggestions";
 import { usePokemonSuggestions } from "@/hooks/usePokemonSuggestions";
 import { useSearchBar } from "@/hooks/useSearchBar";
 
-import { X } from "lucide-react";
-
 export function SearchBar() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const {
     inputValue,
@@ -28,17 +30,29 @@ export function SearchBar() {
 
   const suggestions = usePokemonSuggestions(inputValue);
 
+  useEffect(() => {
+    const match = pathname.match(/^\/pokemon\/(.+)$/);
+
+    if (!match) {
+      return;
+    }
+
+    setInputValue(decodeURIComponent(match[1]));
+  }, [pathname, setInputValue]);
+
   const navigateToPokemon = (name: string) => {
-    router.push(`/pokemon/${encodeURIComponent(name.trim())}`);
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      return;
+    }
+
+    router.push(`/pokemon/${encodeURIComponent(trimmedName)}`);
 
     setShowSuggestions(false);
   };
 
   const handleSearch = () => {
-    if (!inputValue.trim()) {
-      return;
-    }
-
     navigateToPokemon(inputValue);
   };
 

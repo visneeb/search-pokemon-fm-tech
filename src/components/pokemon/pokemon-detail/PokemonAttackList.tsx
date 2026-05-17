@@ -8,9 +8,7 @@ type Props = {
 };
 
 export default function PokemonAttackList({ title, attacks }: Readonly<Props>) {
-  const validAttacks = attacks.filter(
-    (attack) => attack.name && attack.type && attack.damage !== null,
-  );
+  const validAttacks = attacks.filter((attack) => attack.name && attack.type);
 
   if (!validAttacks.length) {
     return null;

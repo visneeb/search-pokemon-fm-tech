@@ -4,9 +4,9 @@ export type Measurement = {
 };
 
 export type Attack = {
-  name: string | null;
-  type: string | null;
-  damage: number | null;
+  name: string;
+  type: string;
+  damage: number;
 };
 
 export type Evolution = {

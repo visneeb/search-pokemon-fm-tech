@@ -11,12 +11,26 @@ export default function PokemonCard({ pokemon }: Readonly<Props>) {
   return (
     <Link
       href={`/pokemon/${pokemon.name}`}
-      className="block rounded-lg border p-4 transition-shadow hover:shadow-md"
+      className="block h-full rounded-xl border p-4 transition-shadow hover:shadow-md"
     >
-      <Image src={pokemon.image} alt={pokemon.name} width={150} height={150} />
+      <div className="flex flex-col md:flex-row h-full items-center gap-6">
+        <div className="relative flex  h-32 w-32 shrink-0 items-center justify-center">
+          <Image
+            src={pokemon.image}
+            alt={pokemon.name}
+            fill
+            className="object-contain"
+          />
+        </div>
 
-      <h2>{pokemon.name}</h2>
-      <p>{pokemon.classification}</p>
+        <div className="min-w-0">
+          <h2 className="truncate text-lg font-bold">{pokemon.name}</h2>
+
+          <p className="text-sm text-muted-foreground">
+            {pokemon.classification}
+          </p>
+        </div>
+      </div>
     </Link>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useQuery } from "@apollo/client/react";
 
 import { GET_POKEMONS } from "@/graphql/queries/pokemonQueries";
@@ -23,13 +24,19 @@ export default function PokemonList({ currentPage }: Readonly<Props>) {
     },
   );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
-  if (!data) return null;
+  const sortedPokemons = useMemo(() => {
+    const pokemons = data?.pokemons ?? [];
 
-  const sortedPokemons = [...data.pokemons].sort((a, b) =>
-    a.name.localeCompare(b.name),
-  );
+    return [...pokemons].sort((a, b) => a.name.localeCompare(b.name));
+  }, [data?.pokemons]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
 
   const totalPages = Math.ceil(sortedPokemons.length / PAGE_SIZE);
 
