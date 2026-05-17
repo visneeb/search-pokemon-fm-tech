@@ -23,6 +23,8 @@ export default function PokemonDetail({ pokemon }: Readonly<Props>) {
             src={pokemon.image}
             alt={pokemon.name}
             fill
+            sizes="160px"
+            priority
             className="object-contain"
           />
         </div>
