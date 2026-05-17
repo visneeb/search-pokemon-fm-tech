@@ -1,15 +1,14 @@
-"use client";
-
+import { headers } from "next/headers";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-export default function NotFound() {
-  const pathname = usePathname();
+export default async function NotFound() {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? "";
 
   let pokemonName = "Unknown Pokémon";
 
   try {
-    const segment = pathname.split("/").pop() ?? "";
+    const segment = pathname.split("/").filter(Boolean).pop() ?? "";
     if (segment) {
       pokemonName = decodeURIComponent(segment);
     }
