@@ -46,7 +46,7 @@ export default async function PokemonPage({ params }: Readonly<Props>) {
     query: GET_POKEMON,
 
     variables: {
-      name: decodeURIComponent(name),
+      name,
     },
 
     context: {

@@ -1,12 +1,20 @@
-"use client";
-
+import { headers } from "next/headers";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
-export default function NotFound() {
-  const params = useParams();
+export default async function NotFound() {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? "";
 
-  const pokemonName = decodeURIComponent(params.name as string);
+  let pokemonName = "Unknown Pokémon";
+
+  try {
+    const segment = pathname.split("/").filter(Boolean).pop() ?? "";
+    if (segment) {
+      pokemonName = decodeURIComponent(segment);
+    }
+  } catch {
+    pokemonName = "Unknown Pokémon";
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
