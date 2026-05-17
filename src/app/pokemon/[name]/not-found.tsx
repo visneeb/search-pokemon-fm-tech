@@ -6,7 +6,15 @@ import { useParams } from "next/navigation";
 export default function NotFound() {
   const params = useParams();
 
-  const pokemonName = decodeURIComponent(params.name as string);
+  let pokemonName = "Unknown Pokémon";
+
+  try {
+    if (typeof params.name === "string") {
+      pokemonName = decodeURIComponent(params.name);
+    }
+  } catch {
+    pokemonName = "Unknown Pokémon";
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
