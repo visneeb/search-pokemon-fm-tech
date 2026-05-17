@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function NotFound() {
-  const params = useParams();
+  const pathname = usePathname();
 
   let pokemonName = "Unknown Pokémon";
 
   try {
-    if (typeof params.name === "string") {
-      pokemonName = decodeURIComponent(params.name);
+    const segment = pathname.split("/").pop() ?? "";
+    if (segment) {
+      pokemonName = decodeURIComponent(segment);
     }
   } catch {
     pokemonName = "Unknown Pokémon";
