@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 
   return (
     data?.pokemons.map((pokemon) => ({
-      name: pokemon.name,
+      name: pokemon.name.toLowerCase(),
     })) ?? []
   );
 }
@@ -46,7 +46,7 @@ export default async function PokemonPage({ params }: Readonly<Props>) {
     query: GET_POKEMON,
 
     variables: {
-      name,
+      name: decodeURIComponent(name),
     },
 
     context: {

@@ -15,6 +15,8 @@ import { SearchSuggestions } from "./SearchSuggestions";
 import { usePokemonSuggestions } from "@/hooks/usePokemonSuggestions";
 import { useSearchBar } from "@/hooks/useSearchBar";
 
+import { normalizePokemonName } from "@/utils/normalizePokemonName";
+
 export function SearchBar() {
   const router = useRouter();
   const pathname = usePathname();
@@ -41,13 +43,13 @@ export function SearchBar() {
   }, [pathname, setInputValue]);
 
   const navigateToPokemon = (name: string) => {
-    const trimmedName = name.trim();
+    const normalizedName = normalizePokemonName(name);
 
-    if (!trimmedName) {
+    if (!normalizedName) {
       return;
     }
 
-    router.push(`/pokemon/${encodeURIComponent(trimmedName)}`);
+    router.push(`/pokemon/${encodeURIComponent(normalizedName)}`);
 
     setShowSuggestions(false);
   };
