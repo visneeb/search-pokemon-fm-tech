@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-
+// Reusable GraphQL fragment for common Pokemon fields
 export const POKEMON_FIELDS = gql`
   fragment PokemonFields on Pokemon {
     id
