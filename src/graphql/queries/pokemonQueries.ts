@@ -6,10 +6,8 @@ import { POKEMON_FIELDS } from "../fragments/pokemon";
 export const GET_POKEMONS = gql`
   query Pokemons($first: Int!) {
 
-    // Fetch Pokémon list with pagination limit
     pokemons(first: $first) {
 
-      // Reuse shared Pokémon fields from fragment
       ...PokemonFields
     }
   }
@@ -21,23 +19,21 @@ export const GET_POKEMONS = gql`
 export const GET_POKEMON = gql`
   query Pokemon($id: String, $name: String) {
 
-    // Fetch Pokémon details
+
     pokemon(id: $id, name: $name) {
 
-      // Reuse shared Pokémon fields
       ...PokemonFields
 
-      // Fetch attack information
+
       attacks {
 
-        // Fast attacks
+
         fast {
           name
           type
           damage
         }
 
-        // Special attacks
         special {
           name
           type
@@ -45,14 +41,12 @@ export const GET_POKEMON = gql`
         }
       }
 
-      // Fetch evolution chain
       evolutions {
         id
         number
         name
         image
 
-        // Nested evolutions
         evolutions {
           id
           number
@@ -70,7 +64,6 @@ export const GET_POKEMON = gql`
 export const GET_POKEMON_NAMES = gql`
   query PokemonNames {
 
-    // Fetch first 151 Pokémon names
     pokemons(first: 151) {
       id
       name
